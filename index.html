@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" href="css/reveal.css">
         <link rel="stylesheet" href="css/beige.css">
+        <link rel="stylesheet" href="lib/highlight.css">
     </head>
     <body>
         <div class="reveal">
@@ -23,17 +24,105 @@
                         <li></li>
                     </ul>
                 </section>
-                <section>Syntax</section>
-                <section></section>
-                <section>Prototipical inheritance</section>
-                <section></section>
-                <section>How does prototype fit in with ES6</section>
-                <section></section>
+                <section>
+                    <h3>Syntax</h3>
+                    <pre><code class="javascript">
+    class Person {
+        constructor(first, last) {
+            this.firstName = first;
+            this.lastName = last;
+        }
+
+        fullName() {
+             return this.firstPlusLast(this.firstName, this.lastName);
+        }
+
+        static firstPlusLast(first, last) {
+            return `${first}, ${last}`;
+        } 
+    }
+                        </code></pre>
+                </section>
+                                <section>
+                    <h3>Inheritance</h3>
+                    <pre><code class="javascript">
+    class Employee extends Person {
+        constructor(first, last, empNum) {
+            super(first, last);
+            this.employeeNumber = empNum;
+        }
+
+        employeeDetails() {
+             return `${this.fullName()}: ${this.employeeNumber}`;
+        }
+    }
+                        </code></pre>
+                </section>
+                <section>
+                    <h3>Prototipical inheritance</h3>
+                    <div>(Objects Linked to Other Objects)</div>
+                    <p>Each object has an internal object called 'prototype' that points to the object its extending from.</p>
+                </section>
+                <section>
+                    <h3>Person class</h3>
+                    <img src="img/personClass.png"/>
+                </section>
+                <section>
+                    <h3>Employee class</h3>
+                    <img src="img/employeeClass.png" style="height:450px"/>
+                </section>
+                <section>
+                    <h3>How might an instance look like?</h3>
+                    <pre><code class="javascript">
+    var alex = new Employee('Alex', 'Me', '123')
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>How might an instance look like?</h3>
+                    <img src="img/chromeEx.png"/ style="height:450px">
+                </section>
+                <section>How can all this done with ES5</section>
+                <section>
+                    <h3>Person as a class</h3>
+                    <pre><code class="javascript">
+    function Person(first, last) {
+        this.firstName = first;
+        this.lastName = last;
+    }
+
+    Person.prototype.fullName = function fullName() {
+        return this.firstPlusLast(this.firstName, this.lastName);
+    };
+
+    Person.firstPlusLast = function (first, last) {
+        return `${first}, ${last}`;
+    };
+                        </code></pre>
+                </section>
+                <section>
+                    <h3>Employee as a class</h3>
+                    <pre><code class="javascript">
+    function Employee(first, last, empNum) {
+        Person.call(this, first, last);
+        this.employeeNumber = empNum;
+    }
+
+    Employee.prototype = new Person();
+
+    Employee.firstPlusLast = Person.firstPlusLast;
+    
+    Employee.prototype.employeeDetails = function employeeDetails(first, last) {
+        return `${this.fullName()}: ${this.employeeNumber}`;
+    };
+                        </code></pre>
+                </section>
             </div>
         </div>
         <script src="lib/reveal.js"></script>
         <script>
             Reveal.initialize();
         </script>
+        <script src="lib/highlight.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
     </body>
 </html>
