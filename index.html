@@ -8,20 +8,14 @@
         <div class="reveal">
             <div class="slides">
                 <section>
-                    <h1>ES6 Classes</h1>
+                    <h1>ES6 classes in depth</h1>
                 </section>
                 <section>
                     <ul>
                         <li>Basic Syntax</li>
                         <li>Prototipical Inheritance</li>
                         <li>How does prototype fit in with ES6</li>
-                        <li>Classical inheritance</li>
-                        <li>Classes as a design pattern</li>
-                        <li>OOP in ES5</li>
-                        <li>Caveates</li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                        <li>FINISH THIS LIST!!</li>
                     </ul>
                 </section>
                 <section>
@@ -115,6 +109,40 @@
         return `${this.fullName()}: ${this.employeeNumber}`;
     };
                         </code></pre>
+                </section>
+                <section>
+                    <h3>How does this compare to classical inheritance?</h3>
+                    <p>In JS all "classes" are objects with key value pairs.
+                        All objects are definitions of other objet references
+                        (which can be modified at run time).
+                    </p>
+                    <p>In classical objets are based on blueprints of their definitions
+                        (can't be modified at run time).
+                        Parents are a copied when extended from their child.
+                    </p>
+                </section>
+                <section>
+                    <h3>what does 'new' actually do?</h3>
+                    <pre><code class="javascript">
+    var alex = new Employee('Alex', 'Me', '123')
+                    </code></pre>
+                    <p>new var 'alex' (refrenced as 'this') with its prototype being a refrence to
+                        the employee object and executes its constructor.</p>
+                </section>
+                <section>
+                    <h3>Classes as a design pattern?</h3>
+                    <h3>Does this mean that JS is a class based programming language?</h3>
+                    <p>Seeing as class is a design pattern JS needs to be modelled to be class based
+                        or at least a close approximation.</p>
+                </section>
+                <section>
+                    <h3>Key points / Caveats</h3>
+                    <ul>
+                        <li>In JavaScript 'class' is really just syntactic sugar</li>
+                        <li>Under the hood its still built on top of prototypes</li>
+                        <li>The class system does not copy definitions but uses references</li>
+                        <li>JS classes are objects</li>
+                    </ul>
                 </section>
             </div>
         </div>
