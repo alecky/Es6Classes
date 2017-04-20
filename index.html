@@ -11,12 +11,128 @@
                     <h1>ES6 classes in depth</h1>
                 </section>
                 <section>
-                    <ul>
-                        <li>Basic Syntax</li>
-                        <li>Prototipical Inheritance</li>
-                        <li>How does prototype fit in with ES6</li>
-                        <li>FINISH THIS LIST!!</li>
-                    </ul>
+                    <h3>Alex Riolo</h3>
+                    <p>@quackous</p>
+                    <img src="img/alex.jpg"/>
+                </section>
+                <section>
+                    <h3>Why do we need objects?</h3>
+                    <p>Lets define a person</p>
+                    <pre><code class="javascript">
+    var firstName = 'John';
+    var lastName = 'Citizen';
+
+    console.log(firstName + lastName);
+                    </code></pre>
+                    <p>What if i want to define more people?</p>
+                </section>
+                <section>
+                    <h3>The basics of Objects</h3>
+                    <p>How are they defined?</p>
+                    <pre><code class="javascript">
+    function MyObjectDefinition(params) {
+        this.myParam = params;
+    }
+
+    var myObject = new MyObjectDefinition('something');
+                    </code></pre>
+                    <pre class="fragment fade-in"><code class="javascript">
+    function Person(first, last) {
+        this.firstName = first;
+        this.lastName = last;
+    }
+
+    var aPerson = new Person('John', 'Citizen');
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>Lets do something useful</h3>
+                    <p>Lets add some methods</p>
+                    <pre><code class="javascript">
+    function Person(first, last) {
+        this.firstName = first;
+        this.lastName = last;
+    }
+                    </code></pre>
+                    <pre class="fragment fade-in"><code class="javascript">
+    Person.printFullName = function printFullName() {
+        console.log(this.firstName + ' ' + this.lastName);
+    }
+    var aPerson = new Person('John', 'Citizen');
+    aPerson.printFullName() // John Citizen
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>To create an employee</h3>
+                    <pre><code class="javascript">
+    function Employee(first, last, num) {
+        this.firstName = first;
+        this.lastName = last;
+        this.empNum = num
+    }
+    Employee.printFullName = function printFullName() {
+        console.log(this.firstName + ' ' + this.lastName);
+    }
+    Employee.employeeDetails = function employeeDetails() {
+        this.printFullName();
+        console.log(this.employeeNumber);
+    }
+    var anEmployee = new Employee('Alex', 'R', '123');
+    anEmployee.employeeDetails();
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>Problem: we need to keep copying the same object in order to extend its functionality.</h3>
+                    <p>Note: Everything from here on are just abstractions.</p>
+                </section>
+                <section>
+                    <h3>Prototipical inheritance</h3>
+                    <div>(Objects Linked to Other Objects)</div>
+                    <p>Each object has an internal object called 'prototype' that points to the object its extending from.</p>
+                </section>
+                <section>
+                    <h3>Person class</h3>
+                    <img src="img/personClass.png"/>
+                </section>
+                <section>
+                    <h3>Employee class</h3>
+                    <img src="img/employeeClass.png" style="height:450px"/>
+                </section>
+                <section>
+                    <h3>Person as a class</h3>
+                    <pre><code class="javascript">
+    function Person(first, last) {
+        this.firstName = first;
+        this.lastName = last;
+    }
+
+    Person.prototype.fullName = function fullName() {
+        return this.firstPlusLast(this.firstName, this.lastName);
+    };
+
+    Person.prototype.firstPlusLast = function (first, last) {
+        return `${first}, ${last}`;
+    };
+                        </code></pre>
+                </section>
+                <section>
+                    <h3>Employee as a class</h3>
+                    <pre><code class="javascript">
+    function Employee(first, last, empNum) {
+        Person.call(this, first, last);
+        this.employeeNumber = empNum;
+    }
+
+    Employee.prototype = Object.create(Person.prototype);
+    
+    Employee.prototype.employeeDetails = function employeeDetails(first, last) {
+        return `${this.fullName()}: ${this.employeeNumber}`;
+    };
+                        </code></pre>
+                </section>
+                <section>
+                    <h3>All this looks good but its not very clean</h3>
+                    <p>lets do this using es6 classes</p>
                 </section>
                 <section>
                     <h3>Syntax</h3>
@@ -31,7 +147,7 @@
              return this.firstPlusLast(this.firstName, this.lastName);
         }
 
-        static firstPlusLast(first, last) {
+        firstPlusLast(first, last) {
             return `${first}, ${last}`;
         } 
     }
@@ -53,62 +169,94 @@
                         </code></pre>
                 </section>
                 <section>
-                    <h3>Prototipical inheritance</h3>
-                    <div>(Objects Linked to Other Objects)</div>
-                    <p>Each object has an internal object called 'prototype' that points to the object its extending from.</p>
+                    <h3>Some tips</h3>
                 </section>
                 <section>
-                    <h3>Person class</h3>
-                    <img src="img/personClass.png"/>
-                </section>
-                <section>
-                    <h3>Employee class</h3>
-                    <img src="img/employeeClass.png" style="height:450px"/>
-                </section>
-                <section>
-                    <h3>How might an instance look like?</h3>
+                    <h3>Static methods</h3>
+                    <p>Looking back at the person object</p>
                     <pre><code class="javascript">
-    var alex = new Employee('Alex', 'Me', '123')
+    class Person {
+        constructor(first, last) {
+            this.firstName = first;
+            this.lastName = last;
+        }
+
+        fullName() {
+             return this.firstPlusLast(this.firstName, this.lastName);
+        }
+
+        firstPlusLast(first, last) {
+            return `${first}, ${last}`;
+        } 
+    }
                     </code></pre>
                 </section>
                 <section>
-                    <h3>How might an instance look like?</h3>
-                    <img src="img/chromeEx.png"/ style="height:450px">
-                </section>
-                <section>How can all this done with ES5</section>
-                <section>
-                    <h3>Person as a class</h3>
+                    <p>Translates to this</p>
                     <pre><code class="javascript">
-    function Person(first, last) {
-        this.firstName = first;
-        this.lastName = last;
+    class Person {
+        constructor(first, last) {
+            this.firstName = first;
+            this.lastName = last;
+        }
+
+        fullName() {
+             return Person.firstPlusLast(this.firstName, this.lastName);
+        }
+
+        static firstPlusLast(first, last) {
+            return `${first}, ${last}`;
+        } 
     }
-
-    Person.prototype.fullName = function fullName() {
-        return this.firstPlusLast(this.firstName, this.lastName);
-    };
-
-    Person.firstPlusLast = function (first, last) {
-        return `${first}, ${last}`;
-    };
                         </code></pre>
                 </section>
                 <section>
-                    <h3>Employee as a class</h3>
+                    <h3>Using arrow functions to preserve 'this' scope</h3>
                     <pre><code class="javascript">
-    function Employee(first, last, empNum) {
-        Person.call(this, first, last);
-        this.employeeNumber = empNum;
-    }
-
-    Employee.prototype = new Person();
-
-    Employee.firstPlusLast = Person.firstPlusLast;
-    
-    Employee.prototype.employeeDetails = function employeeDetails(first, last) {
-        return `${this.fullName()}: ${this.employeeNumber}`;
-    };
-                        </code></pre>
+    class MyButton extends Compnent {
+        constructor(props) {
+            super(props);
+            this.onClick.bind(this);
+        }
+        onClick() {
+            console.log(this.myValue);
+        }
+        render() {
+            return (
+                &lt;button onClick={this.onClick}>
+                    Click Here&lt;/button>
+            );
+        }
+    } 
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>Can do this instead:</h3>
+                    <pre><code class="javascript">
+    class MyButton extends Compnent {
+        onClick = () => {
+            console.log(this.myValue);
+        }
+        render() {
+            return (
+                &lt;button onClick={this.onClick}>
+                    Click Here&lt;/button>
+            );
+        }
+    } 
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>what does 'new' actually do?</h3>
+                    <pre><code class="javascript">
+    var alex = new Employee('Alex', 'Me', '123')
+                    </code></pre>
+                    <p>new var 'alex' (refrenced as 'this') with its prototype being a refrence to
+                        the employee object and executes its constructor.</p>
+                </section>
+                <section>
+                    <h3>Classes as a design pattern?</h3>
+                    <h3>Does this mean that JS is a class based programming language?</h3>
                 </section>
                 <section>
                     <h3>How does this compare to classical inheritance?</h3>
@@ -122,33 +270,36 @@
                     </p>
                 </section>
                 <section>
-                    <h3>what does 'new' actually do?</h3>
-                    <pre><code class="javascript">
-    var alex = new Employee('Alex', 'Me', '123')
-                    </code></pre>
-                    <p>new var 'alex' (refrenced as 'this') with its prototype being a refrence to
-                        the employee object and executes its constructor.</p>
-                </section>
-                <section>
-                    <h3>Classes as a design pattern?</h3>
-                    <h3>Does this mean that JS is a class based programming language?</h3>
-                    <p>Seeing as class is a design pattern JS needs to be modelled to be class based
-                        or at least a close approximation.</p>
-                </section>
-                <section>
                     <h3>Key points / Caveats</h3>
                     <ul>
-                        <li>In JavaScript 'class' is really just syntactic sugar</li>
-                        <li>Under the hood its still built on top of prototypes</li>
-                        <li>The class system does not copy definitions but uses references</li>
+                        <li>Syntactic sugar</li>
+                        <li>Uses prototypes</li>
+                        <li>Uses references</li>
                         <li>JS classes are objects</li>
                     </ul>
+                </section>
+                <section>
+                    <h3>Thank you!</h3>
                 </section>
             </div>
         </div>
         <script src="lib/reveal.js"></script>
         <script>
-            Reveal.initialize();
+            Reveal.initialize({
+	// The "normal" size of the presentation, aspect ratio will be preserved
+	// when the presentation is scaled to fit different resolutions. Can be
+	// specified using percentage units.
+	width: 960,
+	height: 700,
+
+	// Factor of the display size that should remain empty around the content
+	margin: 0.1,
+
+	// Bounds for smallest/largest possible scale to apply to content
+	minScale: 0.2,
+	maxScale: 1.5
+
+});
         </script>
         <script src="lib/highlight.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
